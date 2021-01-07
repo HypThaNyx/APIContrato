@@ -7,13 +7,13 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/WesleyYS">
+  <a href="https://github.com/HypThaNyx">
     <img alt="Made by Wesley Yago" src="https://img.shields.io/badge/made%20by-Wesley%20Yago-orange">
   </a>
 
-  <img alt="Last Commit" src="https://img.shields.io/github/last-commit/WesleyYS/APIContrato">
+  <img alt="Last Commit" src="https://img.shields.io/github/last-commit/HypThaNyx/APIContrato">
 
-  <img alt="Contributors" src="https://img.shields.io/github/contributors/WesleyYS/APIContrato">
+  <img alt="Contributors" src="https://img.shields.io/github/contributors/HypThaNyx/APIContrato">
 
   <img alt="License" src="https://img.shields.io/badge/license-MIT-orange">
 </p>
