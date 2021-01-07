@@ -3,7 +3,7 @@
 </h2>
 
 <p align="center">
-  This is a public project created to test basic knowledge on ASP.NET Core 3.0, WebAPIs, .
+  This is a public project created to test basic knowledge on ASP.NET Core 3.0, WebAPIs and cache management.
 </p>
 
 <p align="center">
@@ -74,6 +74,8 @@ Also, the API should:
 - [ ] use Feature Flags.
 
 The main idiom used is Brazilian Portuguese, my mother language.
+
+---
 
 ### Documentation
 
