@@ -41,7 +41,7 @@
 
 Instructions to use:
 - download or clone the repo
-- run a Shell prompt inside the project's main folder (APIContrato)
+- run a Shell prompt inside the project's service folder (APIContrato/APIService)
 - enter the following command and press Enter:
 
 ```
@@ -49,14 +49,15 @@ dotnet run
 ```
 
 - open any browser and go to the website hosted at [https://localhost:5001/](https://localhost:5001/)
+- use Swagger to communicate with the API and make requests
 
 ---
 
 ## 📋 Features
 
 The API should contain:
-- [ ] entity Contrato, with: id (auto-increment), data contratação, quantidade de parcelas, valor financiado, prestações.
-- [ ] entity Prestação, with: contrato, data vencimento, data pagamento, valor, status (Aberta, Baixada, Atrasada).
+- [X] entity Contrato, with: id (auto-increment), data contratação, quantidade de parcelas, valor financiado, prestações.
+- [X] entity Prestação, with: contrato, data vencimento, data pagamento, valor, status (Aberta, Baixada, Atrasada).
 - [ ] the Status field should be displayed based on the field *data vencimento*, *data atual* and *data pagamento*, not being stored on the database.
     - *data vencimento* >= *data atual* && !*data pagamento* = Aberta
     - *data vencimento* < *data atual* && !*data pagamento* = Atrasada
@@ -70,7 +71,7 @@ Also, the API should:
 - [ ] perform Unit Testing.
 - [ ] not allow the user to send the ID along with the contract's requisition.
 - [ ] use InMemoryCache, making the cache expire after midnight on the next day.
-- [ ] use Swagger.
+- [X] use Swagger.
 - [ ] use Feature Flags.
 
 The main idiom used is Brazilian Portuguese, my mother language.
