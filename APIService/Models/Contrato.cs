@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace APIContrato.Models
+namespace APIService.Models
 {
     public class Contrato
     {
