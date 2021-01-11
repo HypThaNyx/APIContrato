@@ -14,7 +14,7 @@ namespace APIService.Services
     public class PrestacaoService : IPrestacaoService
     {
         public PrestacaoService(){}
-        
+
         public async Task<List<Prestacao>> GerarPrestacoes(Contrato model)
         {
             List<Prestacao> prestacoes = new List<Prestacao>();
@@ -36,6 +36,7 @@ namespace APIService.Services
             Prestacao prestacao = new Prestacao();
             prestacao.IdContrato = contractId;
             prestacao.DataVencimento = dataVencimento;
+            prestacao.DataPagamento = null;
             prestacao.Valor = valorPrestacao;
             prestacao.Status = "Aberta";
             await Task.Delay(0);
