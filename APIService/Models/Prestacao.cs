@@ -17,7 +17,5 @@ namespace APIService.Models
         public string DataPagamento { get; set; }
 
         public float Valor { get; set; }
-
-        public string Status { get; set; }
     }
 }
