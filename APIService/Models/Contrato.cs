@@ -7,7 +7,7 @@ namespace APIService.Models
     public class Contrato
     {
         [Key]
-        public int Id { get {return Id;} private set{ } }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Esse campo é obrigatório")]
         public DateTime DataContratacao { get; set; }
