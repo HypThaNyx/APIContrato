@@ -10,9 +10,11 @@ namespace APIService.Models
 
         public int IdContrato { get ;  set; }
 
+        public Contrato Contrato { get ;  set; }
+
         public DateTime DataVencimento { get; set; }
 
-        public DateTime DataPagamento { get; set; }
+        public string DataPagamento { get; set; }
 
         public float Valor { get; set; }
 
