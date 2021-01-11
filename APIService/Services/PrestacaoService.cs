@@ -29,10 +29,10 @@ namespace APIService.Services
             return prestacoes;
         }
 
-        public async Task<Prestacao> CriarPrestacao(int modelId, DateTime dataVencimento, float valorPrestacao)
+        public async Task<Prestacao> CriarPrestacao(int contractId, DateTime dataVencimento, float valorPrestacao)
         {
             Prestacao prestacao = new Prestacao();
-            prestacao.IdContrato = modelId;
+            prestacao.IdContrato = contractId;
             prestacao.DataVencimento = dataVencimento;
             prestacao.Valor = valorPrestacao;
             prestacao.Status = "Aberta";
