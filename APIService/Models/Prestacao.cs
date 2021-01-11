@@ -6,6 +6,8 @@ namespace APIService.Models
     public class Prestacao
     {
         [Key]
+        public int Id { get {return Id;} private set{ } }
+
         public int IdContrato { get ;  set; }
 
         public DateTime DataVencimento { get; set; }
