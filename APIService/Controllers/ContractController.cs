@@ -96,11 +96,33 @@ namespace APIService.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("prestacao/{id:int}")]
+        public async Task<IActionResult> AtualizarPrestacao(int id, [FromBody] Prestacao prestacao)
+        {
+            if (prestacao == null || prestacao.DataVencimento == null)
+                return BadRequest();
+            
+            var _prestacao = await _context.Prestacoes.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+
+            if (_prestacao == null)
+                return NotFound();
+            
+            _prestacao.DataVencimento = prestacao.DataVencimento;
+            _prestacao.DataPagamento = prestacao.DataPagamento;
+            _prestacao.Status = await CheckStatus(_prestacao.DataPagamento, _prestacao.DataVencimento);
+
+            _context.Prestacoes.Update(_prestacao);
+            await _context.SaveChangesAsync();
+
+            return new NoContentResult();
+        }
+
         [NonAction]
         public async Task<string> CheckStatus(string dataPagamento, DateTime dataVencimento)
         {
             await Task.Delay(0);
-            
+
             if (!string.IsNullOrEmpty(dataPagamento))
             {
                 return "Baixada";
@@ -111,5 +133,6 @@ namespace APIService.Controllers
             }
             else return "Aberta";
         }
+
     }
 }
