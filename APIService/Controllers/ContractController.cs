@@ -16,11 +16,10 @@ namespace APIService.Controllers
         private IPrestacaoService _service;
 
         public ContractController(
-            DataContext context,
-            IPrestacaoService service)
+            DataContext context)
         {
             _context = context;
-            _service = service;
+            _service = new PrestacaoService();
         }
 
         [HttpGet]
