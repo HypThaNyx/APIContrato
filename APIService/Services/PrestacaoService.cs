@@ -13,6 +13,8 @@ namespace APIService.Services
 {
     public class PrestacaoService : IPrestacaoService
     {
+        public PrestacaoService(){}
+        
         public async Task<List<Prestacao>> GerarPrestacoes(Contrato model)
         {
             List<Prestacao> prestacoes = new List<Prestacao>();
