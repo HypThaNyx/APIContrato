@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIService.Models
@@ -17,6 +18,6 @@ namespace APIService.Models
         [Required(ErrorMessage = "Esse campo é obrigatório")]
         public float ValorFinanciado { get; set; }
 
-        public Prestacao[] Prestacoes { get; set; }
+        public List<Prestacao> Prestacoes { get; set; }
     }
 }
