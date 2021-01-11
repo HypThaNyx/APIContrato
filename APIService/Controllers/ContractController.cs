@@ -27,7 +27,9 @@ namespace APIService.Controllers
         [Route("contrato")]
         public async Task<List<Contrato>> GetContracts()
         {
-            var contracts = await _context.Contratos.ToListAsync();
+            var contracts = await _context.Contratos
+                .Include(x => x.Prestacoes)
+                .ToListAsync();
             foreach (Contrato contract in contracts)
             {
                 contract.Prestacoes = await GetPrestacoesByContrato(contract.Id);
@@ -40,7 +42,7 @@ namespace APIService.Controllers
         [Route("contrato/{id:int}")]
         public async Task<Contrato> GetContractById(int id)
         {
-            var contrato = await _context.Contratos.Include(x => x.Id)
+            var contrato = await _context.Contratos.Include(x => x.Prestacoes)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
             return contrato;
@@ -51,9 +53,17 @@ namespace APIService.Controllers
         public async Task<List<Prestacao>> GetPrestacoesByContrato(int idContrato)
         {
             var prestacoes = await _context.Prestacoes
-                .Include(x => x.Contrato)
                 .AsNoTracking()
                 .Where(x => x.IdContrato == idContrato)
+                .ToListAsync();
+            return prestacoes;
+        }
+
+        [HttpGet]
+        [Route("prestacao")]
+        public async Task<List<Prestacao>> GetPrestacoes()
+        {
+            var prestacoes = await _context.Prestacoes
                 .ToListAsync();
             return prestacoes;
         }
@@ -73,11 +83,10 @@ namespace APIService.Controllers
                     _context.Prestacoes.Add(prestacao);
                 }
 
-                Contrato contrato = await GetContractById(model.Id);
-                contrato.Prestacoes = prestacoes;
-                _context.Contratos.Update(contrato);
+                model.Prestacoes = prestacoes;
+                _context.Contratos.Update(model);
                 await _context.SaveChangesAsync();
-                return contrato;
+                return model;
             }
             else
             {
