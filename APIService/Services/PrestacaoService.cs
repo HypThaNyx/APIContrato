@@ -38,6 +38,7 @@ namespace APIService.Services
             prestacao.DataVencimento = dataVencimento;
             prestacao.DataPagamento = null;
             prestacao.Valor = valorPrestacao;
+            prestacao.Status = "Aberta";
             await Task.Delay(0);
             return prestacao;
         }

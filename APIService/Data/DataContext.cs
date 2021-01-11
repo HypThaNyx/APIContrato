@@ -16,9 +16,6 @@ namespace APIService.Data
                 .WithOne(p => p.Contrato)
                 .HasForeignKey(p => p.IdContrato)
                 .IsRequired();
-
-            modelBuilder.Entity<Prestacao>()
-                .Property<string>("Status");
         }
 
         public DbSet<Contrato> Contratos { get; set; }
