@@ -7,7 +7,15 @@ namespace APIService.Data
     {
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
+        {}
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Contrato>()
+                .HasMany(c => c.Prestacoes)
+                .WithOne(p => p.Contrato)
+                .HasForeignKey(p => p.IdContrato)
+                .IsRequired();
         }
 
         public DbSet<Contrato> Contratos { get; set; }
