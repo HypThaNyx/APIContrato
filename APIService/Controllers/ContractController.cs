@@ -6,6 +6,7 @@ using APIService.Data;
 using APIService.Models;
 using APIService.Services;
 using System.Linq;
+using System;
 
 namespace APIService.Controllers
 {
@@ -42,7 +43,8 @@ namespace APIService.Controllers
         [Route("contrato/{id:int}")]
         public async Task<Contrato> GetContractById(int id)
         {
-            var contrato = await _context.Contratos.Include(x => x.Prestacoes)
+            var contrato = await _context.Contratos
+                .Include(x => x.Prestacoes)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
             return contrato;
@@ -92,6 +94,22 @@ namespace APIService.Controllers
             {
                 return BadRequest(ModelState);         
             }
+        }
+
+        [NonAction]
+        public async Task<string> CheckStatus(string dataPagamento, DateTime dataVencimento)
+        {
+            await Task.Delay(0);
+            
+            if (!string.IsNullOrEmpty(dataPagamento))
+            {
+                return "Baixada";
+            }
+            else if (dataVencimento.CompareTo(DateTime.Now) < 0)
+            {
+                return "Atrasada";
+            }
+            else return "Aberta";
         }
     }
 }
