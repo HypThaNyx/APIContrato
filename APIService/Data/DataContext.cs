@@ -10,7 +10,7 @@ namespace APIService.Data
         {
         }
 
-        public DbSet<Contrato> Contrato { get; set; }
-        public DbSet<Prestacao> Prestacao { get; set; }
+        public DbSet<Contrato> Contratos { get; set; }
+        public DbSet<Prestacao> Prestacoes { get; set; }
     }
 }
