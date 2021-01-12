@@ -58,8 +58,7 @@ namespace APIService.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult<List<Contrato>>> GetContracts(
-            [FromServices] IMemoryCache _cache)
+        public async Task<ActionResult<List<Contrato>>> GetContracts()
         {
             var contratos = await _context.Contratos
                 .Include(x => x.Prestacoes)
