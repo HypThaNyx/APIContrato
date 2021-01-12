@@ -17,13 +17,15 @@ namespace APIService.Controllers
     public class ContractController : ControllerBase
     {
         private DataContext _context;
-        private IPrestacaoService _service;
         private IFeatureManager _featureManager;
+        private IPrestacaoService _service;
 
         public ContractController(
-            DataContext context)
+            DataContext context,
+            IFeatureManager featureManager)
         {
             _context = context;
+            _featureManager = featureManager;
             _service = new PrestacaoService();
         }
 
