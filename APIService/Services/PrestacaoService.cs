@@ -57,11 +57,23 @@ namespace APIService.Services
             }
             else return "Aberta";
         }
+
+        public async Task<TimeSpan> TempoAteAmanha()
+        {
+            await Task.Delay(0);
+
+            DateTime amanha = DateTime.Today.AddDays(1);
+
+            TimeSpan tempoAteAmanha = amanha - DateTime.Now;
+            
+            return tempoAteAmanha;
+        }
     }
 
     public interface IPrestacaoService
     {
         Task<List<Prestacao>> GerarPrestacoes(Contrato model);
         Task<string> CheckStatusPrestacao(string dataPagamento, DateTime dataVencimento);
+        Task<TimeSpan> TempoAteAmanha();
     }
 }
