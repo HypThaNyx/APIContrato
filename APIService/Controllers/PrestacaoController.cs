@@ -45,7 +45,7 @@ namespace APIService.Controllers
         }
 
         [HttpPut]
-        [Route("prestacao/{id:int}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> AtualizarPrestacao(int id, [FromBody] Prestacao prestacao)
         {
             if (prestacao == null || prestacao.DataVencimento == null)
