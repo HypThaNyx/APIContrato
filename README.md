@@ -49,7 +49,13 @@ dotnet run
 ```
 
 - open any browser and go to the website hosted at [https://localhost:5001/](https://localhost:5001/)
-- use Swagger to communicate with the API and make requests
+
+### Gallery + How to
+
+If you have followed the steps on <a href="#-getting-started">Getting Started</a> until now, you should be looking at Swagger's UI that looks like this:
+
+[Contrato's API Routes](imgs/contrato.png)
+[Prestação's API Routes](imgs/prestacao.png)
 
 ---
 
