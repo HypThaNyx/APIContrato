@@ -98,7 +98,7 @@ namespace APIService.Controllers
             _context.Contratos.Remove(contrato);
             await _context.SaveChangesAsync();
 
-            return new NoContentResult();
+            return Ok();
         }
     }
 }

@@ -32,6 +32,10 @@ namespace APIService.Controllers
                 .AsNoTracking()
                 .Where(x => x.IdContrato == idContrato)
                 .ToListAsync();
+            
+            if (prestacoes == null)
+                return NotFound();
+
             return prestacoes;
         }
 
@@ -41,6 +45,10 @@ namespace APIService.Controllers
         {
             var prestacoes = await _context.Prestacoes
                 .ToListAsync();
+
+            if (prestacoes == null)
+                return NotFound();
+
             return prestacoes;
         }
 
@@ -63,7 +71,7 @@ namespace APIService.Controllers
             _context.Prestacoes.Update(_prestacao);
             await _context.SaveChangesAsync();
 
-            return new NoContentResult();
+            return Ok();
         }
 
         [HttpDelete]
@@ -78,7 +86,7 @@ namespace APIService.Controllers
             _context.Prestacoes.Remove(_prestacao);
             await _context.SaveChangesAsync();
 
-            return new NoContentResult();
+            return Ok();
         }
     }
 }
