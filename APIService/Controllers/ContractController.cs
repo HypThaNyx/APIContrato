@@ -53,27 +53,36 @@ namespace APIService.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<List<Contrato>> GetContracts()
+        public async Task<ActionResult<List<Contrato>>> GetContracts()
         {
-            var contracts = await _context.Contratos
+            var contratos = await _context.Contratos
                 .Include(x => x.Prestacoes)
                 .ToListAsync();
-            // foreach (Contrato contract in contracts)
+
+            if (contratos == null)
+                return NotFound();
+
+            // foreach (Contrato contrato in contratos)
             // {
-            //     contract.SetPrestacoes(await GetPrestacoesByContrato(contract.Id));
-            //     _context.Contratos.Update(contract);
+            //     contrato.SetPrestacoes(await GetPrestacoesByContrato(contrato.Id));
+            //     _context.Contratos.Update(contrato);
             // }
-            return contracts;
+
+            return contratos;
         }
 
         [HttpGet]
         [Route("{id:int}")]
-        public async Task<Contrato> GetContractById(int id)
+        public async Task<ActionResult<Contrato>> GetContractById(int id)
         {
             var contrato = await _context.Contratos
                 .Include(x => x.Prestacoes)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (contrato == null)
+                return NotFound();
+
             return contrato;
         }
 
@@ -81,12 +90,12 @@ namespace APIService.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> FinalizarContrato(int id)
         {
-            var _contrato = await _context.Contratos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+            var contrato = await _context.Contratos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 
-            if (_contrato == null)
+            if (contrato == null)
                 return NotFound();
             
-            _context.Contratos.Remove(_contrato);
+            _context.Contratos.Remove(contrato);
             await _context.SaveChangesAsync();
 
             return new NoContentResult();

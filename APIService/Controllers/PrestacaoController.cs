@@ -26,7 +26,7 @@ namespace APIService.Controllers
 
         [HttpGet]
         [Route("{idContrato:int}")]
-        public async Task<List<Prestacao>> GetPrestacoesByContrato(int idContrato)
+        public async Task<ActionResult<List<Prestacao>>> GetPrestacoesByContrato(int idContrato)
         {
             var prestacoes = await _context.Prestacoes
                 .AsNoTracking()
@@ -37,7 +37,7 @@ namespace APIService.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<List<Prestacao>> GetPrestacoes()
+        public async Task<ActionResult<List<Prestacao>>> GetPrestacoes()
         {
             var prestacoes = await _context.Prestacoes
                 .ToListAsync();
@@ -46,7 +46,7 @@ namespace APIService.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<IActionResult> AtualizarPrestacao(int id, [FromBody] Prestacao prestacao)
+        public async Task<ActionResult> AtualizarPrestacao(int id, [FromBody] Prestacao prestacao)
         {
             if (prestacao == null || prestacao.DataVencimento == null)
                 return BadRequest();
@@ -68,7 +68,7 @@ namespace APIService.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
-        public async Task<IActionResult> FinalizarPrestacao(int id)
+        public async Task<ActionResult> FinalizarPrestacao(int id)
         {
             var _prestacao = await _context.Prestacoes.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 
