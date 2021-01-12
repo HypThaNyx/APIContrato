@@ -54,8 +54,44 @@ dotnet run
 
 If you have followed the steps on <a href="#-getting-started">Getting Started</a> until now, you should be looking at Swagger's UI that looks like this:
 
-[Contrato's API Routes](imgs/contrato.png)
-[Prestação's API Routes](imgs/prestacao.png)
+<p>
+
+![Contrato's API Routes](imgs/contrato.png)
+![Prestação's API Routes](imgs/prestacao.png)
+
+</p>
+
+<p> 
+
+Instructions on accessing each of the routes:
+
+- 🟢 **/contrato (POST)** - creates a contract with custom installments
+  - Try it out ➡ Fill properties ➡ Execute
+
+- 🔵 **/contrato (GET)** - returns all contracts
+  - Try it out  ➡ Execute
+
+- 🔵 **/contrato/{id} (GET)** - returns a specific contract
+  - Try it out ➡ Insert ID ➡ Execute
+
+- 🔴 **/contrato/{id} (DELETE)** - deletes a contract and all its installments
+  - Try it out ➡ Insert ID ➡ Execute
+
+---
+
+- 🔵 **/prestacao/{idContrato} (GET)** - returns all installments from a specific contract
+  - Try it out ➡ Insert ID ➡ Execute
+
+- 🔵 **/prestacao (GET)** - returns all installments
+  - Try it out  ➡ Execute
+
+- 🟠 **/prestacao/{id} (PUT)** - alters a specific installment
+  - Try it out ➡ Fill properties ➡ Execute
+
+- 🔴 **/prestacao/{id} (DELETE)** - deletes a specific installment
+  - Try it out ➡ Insert ID ➡ Execute
+
+</p>
 
 ---
 
