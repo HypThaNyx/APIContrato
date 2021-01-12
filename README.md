@@ -58,18 +58,18 @@ dotnet run
 The API should contain:
 - [X] entity Contrato, with: id (auto-increment), data contratação, quantidade de parcelas, valor financiado, prestações.
 - [X] entity Prestação, with: contrato, data vencimento, data pagamento, valor, status (Aberta, Baixada, Atrasada).
-- [ ] the Status field should be displayed based on the field *data vencimento*, *data atual* and *data pagamento*, not being stored on the database.
+- [X] the Status field should be displayed based on the field *data vencimento*, *data atual* and *data pagamento*, not being stored on the database.
     - *data vencimento* >= *data atual* && !*data pagamento* = Aberta
     - *data vencimento* < *data atual* && !*data pagamento* = Atrasada
     - *data pagamento* = Baixada 
-- [ ] *InMemoryDB* to store data in memory.
+- [X] *InMemoryDB* to store data in memory.
 
 Also, the API should:
-- [ ] use MVC through modeling.
+- [X] use MVC through modeling.
 - [ ] be a RESTful API (with basic CRUD).
 - [ ] apply Clean Code, SOLID and programming practices.
 - [ ] perform Unit Testing.
-- [ ] not allow the user to send the ID along with the contract's requisition.
+- [X] not allow the user to send the ID along with the contract's requisition.
 - [ ] use InMemoryCache, making the cache expire after midnight on the next day.
 - [X] use Swagger.
 - [ ] use Feature Flags.
