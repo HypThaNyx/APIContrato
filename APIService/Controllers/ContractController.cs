@@ -33,7 +33,7 @@ namespace APIService.Controllers
                 .ToListAsync();
             foreach (Contrato contract in contracts)
             {
-                contract.Prestacoes = await GetPrestacoesByContrato(contract.Id);
+                contract.SetPrestacoes(await GetPrestacoesByContrato(contract.Id));
                 _context.Contratos.Update(contract);
             }
             return contracts;
@@ -76,6 +76,7 @@ namespace APIService.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.SetDataContratacao(DateTime.Now);
                 _context.Contratos.Add(model);
                 await _context.SaveChangesAsync();
 
@@ -85,7 +86,7 @@ namespace APIService.Controllers
                     _context.Prestacoes.Add(prestacao);
                 }
 
-                model.Prestacoes = prestacoes;
+                model.SetPrestacoes(prestacoes);
                 _context.Contratos.Update(model);
                 await _context.SaveChangesAsync();
                 return model;
