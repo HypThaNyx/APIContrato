@@ -11,7 +11,7 @@ using System;
 namespace APIService.Controllers
 {
     [ApiController]
-    [Route("")]
+    [Route("contrato")]
     public class ContractController : ControllerBase
     {
         private DataContext _context;
@@ -25,22 +25,22 @@ namespace APIService.Controllers
         }
 
         [HttpGet]
-        [Route("contrato")]
+        [Route("")]
         public async Task<List<Contrato>> GetContracts()
         {
             var contracts = await _context.Contratos
                 .Include(x => x.Prestacoes)
                 .ToListAsync();
-            foreach (Contrato contract in contracts)
-            {
-                contract.SetPrestacoes(await GetPrestacoesByContrato(contract.Id));
-                _context.Contratos.Update(contract);
-            }
+            // foreach (Contrato contract in contracts)
+            // {
+            //     contract.SetPrestacoes(await GetPrestacoesByContrato(contract.Id));
+            //     _context.Contratos.Update(contract);
+            // }
             return contracts;
         }
 
         [HttpGet]
-        [Route("contrato/{id:int}")]
+        [Route("{id:int}")]
         public async Task<Contrato> GetContractById(int id)
         {
             var contrato = await _context.Contratos
@@ -50,28 +50,10 @@ namespace APIService.Controllers
             return contrato;
         }
 
-        [HttpGet]
-        [Route("prestacao/{idContrato:int}")]
-        public async Task<List<Prestacao>> GetPrestacoesByContrato(int idContrato)
-        {
-            var prestacoes = await _context.Prestacoes
-                .AsNoTracking()
-                .Where(x => x.IdContrato == idContrato)
-                .ToListAsync();
-            return prestacoes;
-        }
-
-        [HttpGet]
-        [Route("prestacao")]
-        public async Task<List<Prestacao>> GetPrestacoes()
-        {
-            var prestacoes = await _context.Prestacoes
-                .ToListAsync();
-            return prestacoes;
-        }
+        
 
         [HttpPost]
-        [Route("contrato")]
+        [Route("")]
         public async Task<ActionResult<Contrato>> PostContract([FromBody] Contrato model)
         {
             if (ModelState.IsValid)
@@ -96,44 +78,5 @@ namespace APIService.Controllers
                 return BadRequest(ModelState);         
             }
         }
-
-        [HttpPut]
-        [Route("prestacao/{id:int}")]
-        public async Task<IActionResult> AtualizarPrestacao(int id, [FromBody] Prestacao prestacao)
-        {
-            if (prestacao == null || prestacao.DataVencimento == null)
-                return BadRequest();
-            
-            var _prestacao = await _context.Prestacoes.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
-
-            if (_prestacao == null)
-                return NotFound();
-            
-            _prestacao.DataVencimento = prestacao.DataVencimento;
-            _prestacao.DataPagamento = prestacao.DataPagamento;
-            _prestacao.Status = await CheckStatus(_prestacao.DataPagamento, _prestacao.DataVencimento);
-
-            _context.Prestacoes.Update(_prestacao);
-            await _context.SaveChangesAsync();
-
-            return new NoContentResult();
-        }
-
-        [NonAction]
-        public async Task<string> CheckStatus(string dataPagamento, DateTime dataVencimento)
-        {
-            await Task.Delay(0);
-
-            if (!string.IsNullOrEmpty(dataPagamento))
-            {
-                return "Baixada";
-            }
-            else if (dataVencimento.CompareTo(DateTime.Now) < 0)
-            {
-                return "Atrasada";
-            }
-            else return "Aberta";
-        }
-
     }
 }

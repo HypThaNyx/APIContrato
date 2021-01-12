@@ -42,10 +42,26 @@ namespace APIService.Services
             await Task.Delay(0);
             return prestacao;
         }
+
+        public async Task<string> CheckStatusPrestacao(string dataPagamento, DateTime dataVencimento)
+        {
+            await Task.Delay(0);
+
+            if (!string.IsNullOrEmpty(dataPagamento))
+            {
+                return "Baixada";
+            }
+            else if (dataVencimento.CompareTo(DateTime.Now) < 0)
+            {
+                return "Atrasada";
+            }
+            else return "Aberta";
+        }
     }
 
     public interface IPrestacaoService
     {
         Task<List<Prestacao>> GerarPrestacoes(Contrato model);
+        Task<string> CheckStatusPrestacao(string dataPagamento, DateTime dataVencimento);
     }
 }
