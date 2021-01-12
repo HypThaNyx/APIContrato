@@ -94,6 +94,13 @@ namespace APIService.Controllers
 
             if (contrato == null)
                 return NotFound();
+
+            var prestacoes = await _context.Prestacoes
+                .AsNoTracking()
+                .Where(x => x.IdContrato == contrato.Id)
+                .ToListAsync();
+
+            _context.RemoveRange(prestacoes);
             
             _context.Contratos.Remove(contrato);
             await _context.SaveChangesAsync();
