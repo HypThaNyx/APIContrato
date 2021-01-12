@@ -7,6 +7,8 @@ using APIService.Models;
 using APIService.Services;
 using System.Linq;
 using System;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.FeatureManagement;
 
 namespace APIService.Controllers
 {
@@ -16,6 +18,7 @@ namespace APIService.Controllers
     {
         private DataContext _context;
         private IPrestacaoService _service;
+        private IFeatureManager _featureManager;
 
         public ContractController(
             DataContext context)
@@ -53,7 +56,8 @@ namespace APIService.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult<List<Contrato>>> GetContracts()
+        public async Task<ActionResult<List<Contrato>>> GetContracts(
+            [FromServices] IMemoryCache _cache)
         {
             var contratos = await _context.Contratos
                 .Include(x => x.Prestacoes)
@@ -73,15 +77,34 @@ namespace APIService.Controllers
 
         [HttpGet]
         [Route("{id:int}")]
-        public async Task<ActionResult<Contrato>> GetContractById(int id)
+        public async Task<ActionResult<Contrato>> GetContractByIdWithCache(
+            int id,
+            [FromServices] IMemoryCache _cache)
         {
+            TimeSpan cacheExpirationTime = await _service.TempoAteAmanha();
+
+            if (await _featureManager.IsEnabledAsync("CacheFeatureFlag"))
+            {
+                var cacheEntry = await _cache.GetOrCreateAsync(id, async entry =>
+                {
+                    entry.AbsoluteExpirationRelativeToNow = cacheExpirationTime;
+                    entry.SetPriority(CacheItemPriority.High);
+                    
+                    return await GetContractById(id);
+                });
+                return cacheEntry;
+                
+            } else return await GetContractById(id);
+        }
+
+        [NonAction]
+        public async Task<Contrato> GetContractById(
+            int id)
+        {            
             var contrato = await _context.Contratos
                 .Include(x => x.Prestacoes)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
-
-            if (contrato == null)
-                return NotFound();
 
             return contrato;
         }
