@@ -7,10 +7,10 @@ namespace APIService.Models
     public class Contrato
     {
         [Key]
-        public int Id { get; set; }
+        public int Id { get; private set; }
 
         [Required(ErrorMessage = "Esse campo é obrigatório")]
-        public DateTime DataContratacao { get; set; }
+        public DateTime DataContratacao { get; private set; }
 
         [Required(ErrorMessage = "Esse campo é obrigatório")]
         public int QuantidadeParcelas { get; set; }
@@ -18,6 +18,11 @@ namespace APIService.Models
         [Required(ErrorMessage = "Esse campo é obrigatório")]
         public float ValorFinanciado { get; set; }
 
-        public List<Prestacao> Prestacoes { get; set; }
+        public List<Prestacao> Prestacoes { get; private set; }
+
+        public void SetDataContratacao(DateTime data) { DataContratacao = data; }
+
+        public void SetPrestacoes(List<Prestacao> prestacoes) { Prestacoes = prestacoes; }
+
     }
 }

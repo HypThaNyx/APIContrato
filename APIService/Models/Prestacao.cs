@@ -8,9 +8,9 @@ namespace APIService.Models
         [Key]
         public int Id { get; set; }
 
-        public int IdContrato { get ;  set; }
+        public int IdContrato { get ; set; }
 
-        public Contrato Contrato { get ;  set; }
+        public Contrato Contrato { get ; set; }
 
         public DateTime DataVencimento { get; set; }
 
