@@ -9,7 +9,6 @@ namespace APIService.Models
         [Key]
         public int Id { get; private set; }
 
-        [Required(ErrorMessage = "Esse campo é obrigatório")]
         public DateTime DataContratacao { get; private set; }
 
         [Required(ErrorMessage = "Esse campo é obrigatório")]
