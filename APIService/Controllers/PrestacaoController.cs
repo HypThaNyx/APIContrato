@@ -65,5 +65,20 @@ namespace APIService.Controllers
 
             return new NoContentResult();
         }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IActionResult> FinalizarPrestacao(int id)
+        {
+            var _prestacao = await _context.Prestacoes.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+
+            if (_prestacao == null)
+                return NotFound();
+            
+            _context.Prestacoes.Remove(_prestacao);
+            await _context.SaveChangesAsync();
+
+            return new NoContentResult();
+        }
     }
 }
