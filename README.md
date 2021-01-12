@@ -66,7 +66,7 @@ The API should contain:
 
 Also, the API should:
 - [X] use MVC through modeling.
-- [ ] be a RESTful API (with basic CRUD).
+- [X] be a RESTful API (with basic CRUD).
 - [ ] apply Clean Code, SOLID and programming practices.
 - [ ] perform Unit Testing.
 - [X] not allow the user to send the ID along with the contract's requisition.
