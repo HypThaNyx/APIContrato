@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using APIService.Data;
+using APIService.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -37,6 +38,7 @@ namespace APIService
                 );                
             services.AddMemoryCache();
             services.AddFeatureManagement();
+            services.AddTransient<IPrestacaoService, PrestacaoService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "APIService", Version = "v1" });

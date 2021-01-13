@@ -22,11 +22,12 @@ namespace APIService.Controllers
 
         public ContractController(
             DataContext context,
-            IFeatureManager featureManager)
+            IFeatureManager featureManager,
+            IPrestacaoService service)
         {
             _context = context;
             _featureManager = featureManager;
-            _service = new PrestacaoService();
+            _service = service;
         }
 
         [HttpPost]

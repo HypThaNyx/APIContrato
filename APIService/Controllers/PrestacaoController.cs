@@ -18,10 +18,11 @@ namespace APIService.Controllers
         private IPrestacaoService _service;
 
         public PrestacaoController(
-            DataContext context)
+            DataContext context,
+            IPrestacaoService service)
         {
             _context = context;
-            _service = new PrestacaoService();
+            _service = service;
         }
 
         [HttpGet]
@@ -56,7 +57,7 @@ namespace APIService.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult> AtualizarPrestacao(int id, [FromBody] Prestacao prestacao)
         {
-            if (prestacao == null || prestacao.DataVencimento == null)
+            if (prestacao == null)
                 return BadRequest();
             
             var _prestacao = await _context.Prestacoes.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
