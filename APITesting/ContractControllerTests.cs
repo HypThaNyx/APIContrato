@@ -16,5 +16,12 @@ namespace APITesting
         {
 
         }
+
+        private DbContextOptions<DataContext> CreateInMemoryDB()
+        {
+            return new DbContextOptionsBuilder<DataContext>()
+                .UseInMemoryDatabase(databaseName: "ContractDatabase")
+                .Options;
+        }
     }
 }
