@@ -14,14 +14,11 @@ namespace APIService.Controllers
     [Route("prestacao")]
     public class PrestacaoController : ControllerBase
     {
-        private DataContext _context;
         private IPrestacaoService _service;
 
         public PrestacaoController(
-            DataContext context,
             IPrestacaoService service)
         {
-            _context = context;
             _service = service;
         }
 
@@ -29,10 +26,7 @@ namespace APIService.Controllers
         [Route("{idContrato:int}")]
         public async Task<ActionResult<List<Prestacao>>> GetPrestacoesByContrato(int idContrato)
         {
-            var prestacoes = await _context.Prestacoes
-                .AsNoTracking()
-                .Where(x => x.IdContrato == idContrato)
-                .ToListAsync();
+            var prestacoes = await _service.ListarPrestacoesPorContrato(idContrato);
             
             if (prestacoes == null)
                 return NotFound();
@@ -44,8 +38,7 @@ namespace APIService.Controllers
         [Route("")]
         public async Task<ActionResult<List<Prestacao>>> GetPrestacoes()
         {
-            var prestacoes = await _context.Prestacoes
-                .ToListAsync();
+            var prestacoes = await _service.ListarTodasPrestacoes();
 
             if (prestacoes == null)
                 return NotFound();
@@ -55,39 +48,22 @@ namespace APIService.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<ActionResult> AtualizarPrestacao(int id, [FromBody] Prestacao prestacao)
+        public async Task<ActionResult> PutPrestacao(int id, [FromBody] Prestacao prestacao)
         {
             if (prestacao == null)
                 return BadRequest();
             
-            var _prestacao = await _context.Prestacoes.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+            var resultado = await _service.AlterarPrestacao(id, prestacao);
 
-            if (_prestacao == null)
-                return NotFound();
-            
-            _prestacao.DataVencimento = prestacao.DataVencimento;
-            _prestacao.DataPagamento = prestacao.DataPagamento;
-            _prestacao.Status = await _service.CheckStatusPrestacao(_prestacao.DataPagamento, _prestacao.DataVencimento);
-
-            _context.Prestacoes.Update(_prestacao);
-            await _context.SaveChangesAsync();
-
-            return Ok();
+            return resultado ? Ok() : NotFound();
         }
 
         [HttpDelete]
         [Route("{id:int}")]
-        public async Task<ActionResult> FinalizarPrestacao(int id)
+        public async Task<ActionResult> DeletePrestacao(int id)
         {
-            var _prestacao = await _context.Prestacoes.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
-
-            if (_prestacao == null)
-                return NotFound();
-            
-            _context.Prestacoes.Remove(_prestacao);
-            await _context.SaveChangesAsync();
-
-            return Ok();
+            bool resultado = await _service.RemoverPrestacao(id);
+            return resultado ? Ok() : NotFound();
         }
     }
 }

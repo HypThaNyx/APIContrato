@@ -79,6 +79,7 @@ namespace APIService.Services
         #endregion
 
         #region Prestação
+        
         public async Task<List<Prestacao>> GerarPrestacoes(Contrato model)
         {
             List<Prestacao> prestacoes = new List<Prestacao>();
@@ -105,6 +106,50 @@ namespace APIService.Services
             prestacao.Status = "Aberta";
             await Task.Delay(0);
             return prestacao;
+        }
+
+        public async Task<List<Prestacao>> ListarPrestacoesPorContrato(int idContrato)
+        {
+            return await _context.Prestacoes
+                .AsNoTracking()
+                .Where(x => x.IdContrato == idContrato)
+                .ToListAsync();
+        }
+
+        public async Task<List<Prestacao>> ListarTodasPrestacoes()
+        {
+            return await _context.Prestacoes
+                .ToListAsync();
+        }
+
+        public async Task<bool> AlterarPrestacao(int id, Prestacao prestacao)
+        {
+            var _prestacao = await _context.Prestacoes.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+
+            if (_prestacao == null)
+                return false;
+            
+            _prestacao.DataVencimento = prestacao.DataVencimento;
+            _prestacao.DataPagamento = prestacao.DataPagamento;
+            _prestacao.Status = await CheckStatusPrestacao(_prestacao.DataPagamento, _prestacao.DataVencimento);
+
+            _context.Prestacoes.Update(_prestacao);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> RemoverPrestacao(int id)
+        {
+            var _prestacao = await _context.Prestacoes.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+
+            if (_prestacao == null)
+                return false;
+            
+            _context.Prestacoes.Remove(_prestacao);
+            await _context.SaveChangesAsync();
+
+            return false;
         }
 
         public async Task<string> CheckStatusPrestacao(string dataPagamento, DateTime dataVencimento)
@@ -136,6 +181,7 @@ namespace APIService.Services
             return tempoAteAmanha;
         }
 
+
         #endregion
     }
 
@@ -145,7 +191,12 @@ namespace APIService.Services
         Task<List<Contrato>> ListContratos();
         Task<Contrato> GetContractById(int id);
         Task<bool> RemoverContrato(int id);
+
         Task<List<Prestacao>> GerarPrestacoes(Contrato model);
+        Task<List<Prestacao>> ListarPrestacoesPorContrato(int idContrato);
+        Task<List<Prestacao>> ListarTodasPrestacoes();
+        Task<bool> AlterarPrestacao(int id, Prestacao prestacao);
+        Task<bool> RemoverPrestacao(int id);
         Task<string> CheckStatusPrestacao(string dataPagamento, DateTime dataVencimento);
         Task<TimeSpan> TempoAteAmanha();
     }
