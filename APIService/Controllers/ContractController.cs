@@ -16,16 +16,13 @@ namespace APIService.Controllers
     [Route("contrato")]
     public class ContractController : ControllerBase
     {
-        private DataContext _context;
         private IFeatureManager _featureManager;
         private IPrestacaoService _service;
 
         public ContractController(
-            DataContext context,
             IFeatureManager featureManager,
             IPrestacaoService service)
         {
-            _context = context;
             _featureManager = featureManager;
             _service = service;
         }
@@ -35,21 +32,8 @@ namespace APIService.Controllers
         public async Task<ActionResult<Contrato>> PostContract([FromBody] Contrato model)
         {
             if (ModelState.IsValid)
-            {
-                model.SetDataContratacao(DateTime.Now);
-                _context.Contratos.Add(model);
-                await _context.SaveChangesAsync();
-
-                List<Prestacao> prestacoes = await _service.GerarPrestacoes(model);
-                foreach (Prestacao prestacao in prestacoes)
-                {
-                    _context.Prestacoes.Add(prestacao);
-                }
-
-                model.SetPrestacoes(prestacoes);
-                _context.Contratos.Update(model);
-                await _context.SaveChangesAsync();
-                return model;
+            {                
+                return await _service.GerarNovoContrato(model);
             }
             else
             {
@@ -61,18 +45,10 @@ namespace APIService.Controllers
         [Route("")]
         public async Task<ActionResult<List<Contrato>>> GetContracts()
         {
-            var contratos = await _context.Contratos
-                .Include(x => x.Prestacoes)
-                .ToListAsync();
+            var contratos = await _service.ListContratos();
 
             if (contratos == null)
                 return NotFound();
-
-            // foreach (Contrato contrato in contratos)
-            // {
-            //     contrato.SetPrestacoes(await GetPrestacoesByContrato(contrato.Id));
-            //     _context.Contratos.Update(contrato);
-            // }
 
             return contratos;
         }
@@ -92,45 +68,19 @@ namespace APIService.Controllers
                     entry.AbsoluteExpirationRelativeToNow = cacheExpirationTime;
                     entry.SetPriority(CacheItemPriority.High);
                     
-                    return await GetContractById(id);
+                    return await _service.GetContractById(id);
                 });
                 return cacheEntry;
                 
-            } else return await GetContractById(id);
-        }
-
-        [NonAction]
-        public async Task<Contrato> GetContractById(
-            int id)
-        {            
-            var contrato = await _context.Contratos
-                .Include(x => x.Prestacoes)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-            return contrato;
-        }
+            } else return await _service.GetContractById(id);
+        }        
 
         [HttpDelete]
         [Route("{id:int}")]
         public async Task<IActionResult> FinalizarContrato(int id)
         {
-            var contrato = await _context.Contratos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
-
-            if (contrato == null)
-                return NotFound();
-
-            var prestacoes = await _context.Prestacoes
-                .AsNoTracking()
-                .Where(x => x.IdContrato == contrato.Id)
-                .ToListAsync();
-
-            _context.RemoveRange(prestacoes);
-            
-            _context.Contratos.Remove(contrato);
-            await _context.SaveChangesAsync();
-
-            return Ok();
+            bool resultado = await _service.RemoverContrato(id);
+            return resultado ? Ok() : NotFound();
         }
     }
 }
