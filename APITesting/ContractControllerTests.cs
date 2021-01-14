@@ -39,6 +39,29 @@ namespace APITesting
             }
         }
 
+        [Fact]
+        public async Task GerarNovoContratoPeloServico_ContratoValido_DadosValidos()
+        {
+            var options = await CreateInMemoryDB();
+
+            //Create mocked Context by seeding Data
+            using (var context = new DataContext(options))
+            {
+                PrestacaoService prestacaoService = new PrestacaoService(context);
+
+                var contrato = await prestacaoService.GerarNovoContrato(new Contrato
+                {
+                    QuantidadeParcelas = 5,
+                    ValorFinanciado = 5000
+                });
+
+                //ASSERT
+                Assert.NotNull(contrato);
+                Assert.Equal(5, contrato.QuantidadeParcelas);
+                Assert.Equal(5000, contrato.ValorFinanciado);
+            }
+        }
+
         private async Task<DbContextOptions<DataContext>> CreateInMemoryDB()
         {
             await Task.Delay(0);
