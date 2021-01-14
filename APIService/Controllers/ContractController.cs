@@ -16,14 +16,11 @@ namespace APIService.Controllers
     [Route("contrato")]
     public class ContractController : ControllerBase
     {
-        private IFeatureManager _featureManager;
         private IPrestacaoService _service;
 
         public ContractController(
-            IFeatureManager featureManager,
             IPrestacaoService service)
         {
-            _featureManager = featureManager;
             _service = service;
         }
 
@@ -57,7 +54,8 @@ namespace APIService.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult<Contrato>> GetContractByIdWithCache(
             int id,
-            [FromServices] IMemoryCache _cache)
+            [FromServices] IMemoryCache _cache,
+            [FromServices] IFeatureManager _featureManager)
         {
             TimeSpan cacheExpirationTime = await _service.TempoAteAmanha();
 
