@@ -3,7 +3,7 @@
 </h2>
 
 <p align="center">
-  This is a public project created to test basic knowledge on ASP.NET Core 3.0, WebAPIs, .
+  This is a public project created to test basic knowledge on ASP.NET Core 3.0, WebAPIs and cache management.
 </p>
 
 <p align="center">
@@ -41,7 +41,7 @@
 
 Instructions to use:
 - download or clone the repo
-- run a Shell prompt inside the project's main folder (APIContrato)
+- run a Shell prompt inside the project's service folder (APIContrato/APIService)
 - enter the following command and press Enter:
 
 ```
@@ -50,30 +50,75 @@ dotnet run
 
 - open any browser and go to the website hosted at [https://localhost:5001/](https://localhost:5001/)
 
+### Gallery + How to
+
+If you have followed the steps on <a href="#-getting-started">Getting Started</a> until now, you should be looking at Swagger's UI that looks like this:
+
+<p>
+
+![Contrato's API Routes](imgs/contrato.png)
+![Prestação's API Routes](imgs/prestacao.png)
+
+</p>
+
+<p> 
+
+Instructions on accessing each of the routes:
+
+- 🟢 **/contrato (POST)** - creates a contract with custom installments
+  - Try it out ➡ Fill properties ➡ Execute
+
+- 🔵 **/contrato (GET)** - returns all contracts
+  - Try it out  ➡ Execute
+
+- 🔵 **/contrato/{id} (GET)** - returns a specific contract
+  - Try it out ➡ Insert ID ➡ Execute
+
+- 🔴 **/contrato/{id} (DELETE)** - deletes a contract and all its installments
+  - Try it out ➡ Insert ID ➡ Execute
+
+---
+
+- 🔵 **/prestacao/{idContrato} (GET)** - returns all installments from a specific contract
+  - Try it out ➡ Insert ID ➡ Execute
+
+- 🔵 **/prestacao (GET)** - returns all installments
+  - Try it out  ➡ Execute
+
+- 🟠 **/prestacao/{id} (PUT)** - alters a specific installment
+  - Try it out ➡ Fill properties ➡ Execute
+
+- 🔴 **/prestacao/{id} (DELETE)** - deletes a specific installment
+  - Try it out ➡ Insert ID ➡ Execute
+
+</p>
+
 ---
 
 ## 📋 Features
 
 The API should contain:
-- [ ] entity Contrato, with: id (auto-increment), data contratação, quantidade de parcelas, valor financiado, prestações.
-- [ ] entity Prestação, with: contrato, data vencimento, data pagamento, valor, status (Aberta, Baixada, Atrasada).
-- [ ] the Status field should be displayed based on the field *data vencimento*, *data atual* and *data pagamento*, not being stored on the database.
+- [X] entity Contrato, with: id (auto-increment), data contratação, quantidade de parcelas, valor financiado, prestações.
+- [X] entity Prestação, with: contrato, data vencimento, data pagamento, valor, status (Aberta, Baixada, Atrasada).
+- [X] the Status field should be displayed based on the field *data vencimento*, *data atual* and *data pagamento*, not being stored on the database.
     - *data vencimento* >= *data atual* && !*data pagamento* = Aberta
     - *data vencimento* < *data atual* && !*data pagamento* = Atrasada
     - *data pagamento* = Baixada 
-- [ ] *InMemoryDB* to store data in memory.
+- [X] *InMemoryDB* to store data in memory.
 
 Also, the API should:
-- [ ] use MVC through modeling.
-- [ ] be a RESTful API (with basic CRUD).
-- [ ] apply Clean Code, SOLID and programming practices.
+- [X] use MVC through modeling.
+- [X] be a RESTful API (with basic CRUD).
+- [X] apply Clean Code, SOLID and programming practices.
 - [ ] perform Unit Testing.
-- [ ] not allow the user to send the ID along with the contract's requisition.
-- [ ] use InMemoryCache, making the cache expire after midnight on the next day.
-- [ ] use Swagger.
-- [ ] use Feature Flags.
+- [X] not allow the user to send the ID along with the contract's requisition.
+- [X] use InMemoryCache, making the cache expire after midnight on the next day.
+- [X] use Swagger.
+- [X] use Feature Flags.
 
 The main idiom used is Brazilian Portuguese, my mother language.
+
+---
 
 ### Documentation
 
